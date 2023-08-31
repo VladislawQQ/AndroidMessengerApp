@@ -1,0 +1,61 @@
+plugins {
+    id 'com.android.application'                // core
+    id 'org.jetbrains.kotlin.android'           // core
+    id 'androidx.navigation.safeargs.kotlin'    // safe args for navigation
+    id 'kotlin-parcelize'                       // parcelize for safe args model
+}
+
+android {
+    namespace 'com.example.messengerApp'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.example.messengerApp"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    // Core
+    implementation "androidx.core:core-ktx:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // Glide for images
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+
+    // Faker for fake data
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+
+    // View model
+    implementation "androidx.fragment:fragment-ktx:1.6.1"
+    implementation "androidx.activity:activity-ktx:1.7.2"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+}
