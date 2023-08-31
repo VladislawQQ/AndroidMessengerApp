@@ -36,10 +36,10 @@
         app:layout_constraintGuide_percent="0.97" />
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/fragment_auth_flow_title_text"
+        android:id="@+id/flow_title_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="fragment_auth_text_view_main_label, fragment_auth_text_view_under_main_label"
+        app:constraint_referenced_ids="text_view_main_label, text_view_under_main_label"
         android:orientation="vertical"
         app:flow_verticalStyle="packed"
         app:flow_verticalGap="@dimen/margin_small"
@@ -52,7 +52,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_auth_text_view_main_label"
+        android:id="@+id/text_view_main_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAppearance="@style/open_sans_font"
@@ -63,7 +63,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_auth_text_view_under_main_label"
+        android:id="@+id/text_view_under_main_label"
         android:textAppearance="@style/open_sans_font"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -74,21 +74,21 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/fragment_auth_flow_data_containers"
+        android:id="@+id/flow_data_containers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="fragment_auth_container_email, fragment_auth_container_password, fragment_auth_checkbox_remember_me"
+        app:constraint_referenced_ids="container_email, container_password, checkbox_remember_me"
         android:orientation="vertical"
         app:flow_verticalStyle="packed"
         android:layout_marginTop="@dimen/margin_medium"
 
-        app:layout_constraintTop_toBottomOf="@id/fragment_auth_flow_title_text"
+        app:layout_constraintTop_toBottomOf="@id/flow_title_text"
         app:layout_constraintStart_toStartOf="@id/content_start"
         app:layout_constraintEnd_toEndOf="@id/content_end"
         />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragment_auth_container_email"
+        android:id="@+id/container_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/TextInputLayout"
@@ -99,7 +99,7 @@
         app:helperTextTextColor="@color/text_input_layout_error_msg_color">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/fragment_auth_edit_text_email"
+            android:id="@+id/edit_text_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -109,7 +109,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fragment_auth_container_password"
+        android:id="@+id/container_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/TextInputLayout"
@@ -120,7 +120,7 @@
         tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/fragment_auth_edit_text_password"
+            android:id="@+id/edit_text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
@@ -131,7 +131,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatCheckBox
-        android:id="@+id/fragment_auth_checkbox_remember_me"
+        android:id="@+id/checkbox_remember_me"
         android:textAppearance="@style/open_sans_font"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -143,17 +143,17 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/fragment_auth_flow_buttons"
+        android:id="@+id/flow_buttons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="fragment_auth_button_google, fragment_auth_text_view_or, fragment_auth_button_register"
+        app:constraint_referenced_ids="button_google, text_view_or, button_register"
         android:orientation="vertical"
         app:flow_verticalStyle="packed"
         app:flow_verticalGap="@dimen/fragment_auth_buttons_gap"
         android:layout_marginBottom="@dimen/margin_medium"
 
-        app:layout_constraintTop_toBottomOf="@+id/fragment_auth_flow_data_containers"
-        app:layout_constraintBottom_toTopOf="@id/fragment_auth_text_view_terms"
+        app:layout_constraintTop_toBottomOf="@+id/flow_data_containers"
+        app:layout_constraintBottom_toTopOf="@id/text_view_terms"
         app:layout_constraintVertical_bias="1"
         app:layout_constraintStart_toStartOf="@id/content_start"
         app:layout_constraintEnd_toEndOf="@id/content_end"
@@ -161,7 +161,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/fragment_auth_button_google"
+        android:id="@+id/button_google"
         android:textAppearance="@style/open_sans_font"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
         android:textSize="@dimen/fragment_auth_button_text_size" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_auth_text_view_or"
+        android:id="@+id/text_view_or"
         android:textAppearance="@style/open_sans_font"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/fragment_auth_button_register"
+        android:id="@+id/button_register"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_register"
@@ -208,7 +208,7 @@
         tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_auth_text_view_terms"
+        android:id="@+id/text_view_terms"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_small"
@@ -221,14 +221,14 @@
 
         app:layout_constraintStart_toStartOf="@id/content_start"
         app:layout_constraintEnd_toEndOf="@id/content_end"
-        app:layout_constraintBottom_toTopOf="@id/fragment_auth_flow_text_view_sign_in"
+        app:layout_constraintBottom_toTopOf="@id/flow_text_view_sign_in"
         />
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/fragment_auth_flow_text_view_sign_in"
+        android:id="@+id/flow_text_view_sign_in"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="fragment_auth_text_view_have_acc, fragment_auth_text_view_sign_in"
+        app:constraint_referenced_ids="text_view_have_acc, text_view_sign_in"
         android:orientation="horizontal"
         app:flow_horizontalStyle="packed"
         app:flow_horizontalGap="@dimen/fragment_auth_sign_in_texts_gap"
@@ -239,7 +239,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_auth_text_view_have_acc"
+        android:id="@+id/text_view_have_acc"
         android:textAppearance="@style/open_sans_font"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -250,7 +250,7 @@
         />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_auth_text_view_sign_in"
+        android:id="@+id/text_view_sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 

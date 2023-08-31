@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,7 @@ import com.example.messengerApp.ui.main.viewpager.myContacts.addContact.AddConta
 import com.example.messengerApp.ui.main.viewpager.myContacts.addContact.AddContactDialogFragment.Companion.TAG_ADD_CONTACT
 import com.example.messengerApp.ui.main.viewpager.myContacts.addContact.ConfirmationListener
 import com.example.messengerApp.ui.main.viewpager.myContacts.model.ContactListItem
+import com.example.messengerApp.ui.utils.Constants
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -85,15 +87,17 @@ class MyContactsFragment :
     }
 
     private fun setListeners() {
-        binding.fragmentMyContactTextViewAddContact.setOnClickListener { startDialogAddContact() }
-        binding.fragmentMyContactsImageViewBack.setOnClickListener { imageViewBackListener() }
-        binding.textViewGetContacts.setOnClickListener { requestReadContactsPermission() }
-        binding.imageViewBucket.setOnClickListener { viewModel.deleteSelectedItems() }
-        binding.fragmentMyContactImageViewSearch.setOnClickListener { } // TODO: search in contacts
+        with(binding) {
+            fragmentMyContactTextViewAddContact.setOnClickListener { startDialogAddContact() }
+            fragmentMyContactsImageViewBack.setOnClickListener { imageViewBackListener() }
+            textViewGetContacts.setOnClickListener { requestReadContactsPermission() }
+            imageViewBucket.setOnClickListener { viewModel.deleteSelectedItems() }
+            fragmentMyContactImageViewSearch.setOnClickListener { } // TODO: search in contacts
+        }
     }
 
     private fun imageViewBackListener() {
-        (parentFragment as ViewPagerFragment).openTab(0)
+        (parentFragment as ViewPagerFragment).openTab(Constants.SCREENS.PROFILE_SCREEN.ordinal)
     }
 
     private fun startDialogAddContact() {
@@ -121,8 +125,10 @@ class MyContactsFragment :
 
         viewModel.isMultiselect.observe(viewLifecycleOwner) { isMultiselect ->
             contactAdapter.isMultiSelectMode = isMultiselect
-            binding.imageViewBucket.visibility = if (isMultiselect) VISIBLE else GONE
-            binding.fragmentMyContactRecyclerViewContacts.adapter = contactAdapter
+            with(binding) {
+                imageViewBucket.visibility = if (isMultiselect) VISIBLE else GONE
+                fragmentMyContactRecyclerViewContacts.adapter = contactAdapter
+            }
         }
     }
 
@@ -143,7 +149,7 @@ class MyContactsFragment :
             }
 
             override fun isItemViewSwipeEnabled(): Boolean {
-                return !(viewModel.isMultiselect.value)!!
+                return viewModel.isMultiselect.value == false
             }
         }).attachToRecyclerView(binding.fragmentMyContactRecyclerViewContacts)
     }

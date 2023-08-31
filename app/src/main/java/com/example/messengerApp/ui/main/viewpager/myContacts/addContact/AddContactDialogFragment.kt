@@ -4,15 +4,17 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.messengerApp.ui.utils.constants.Constants.DEFAULT_NAME
+import com.example.messengerApp.ui.utils.Constants.DEFAULT_NAME
 import com.example.messengerApp.data.models.Contact
 import com.example.messengerApp.databinding.DialogAddContactBinding
 import com.example.messengerApp.ui.utils.ext.setContactPhoto
 
-class AddContactDialogFragment : DialogFragment() {
+open class AddContactDialogFragment : DialogFragment() {
 
     private lateinit var listener: ConfirmationListener
-    private lateinit var _binding: DialogAddContactBinding // todo : занулити
+
+    private var _binding: DialogAddContactBinding? = null
+    private val binding get() = requireNotNull(_binding)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = DialogAddContactBinding.inflate(layoutInflater)
@@ -20,14 +22,14 @@ class AddContactDialogFragment : DialogFragment() {
 
         setListeners()
 
-        _binding.dialogAddContactImageViewProfilePhoto.setContactPhoto()
-        builder.setView(_binding.root)
+        binding.dialogAddContactImageViewProfilePhoto.setContactPhoto()
+        builder.setView(binding.root)
         return builder.create()
     }
 
     private fun setListeners() {
-        _binding.dialogAddContactImageViewBack.setOnClickListener { imageViewBackListener() }
-        _binding.dialogAddContactButtonSave.setOnClickListener { saveButtonListener() }
+        binding.dialogAddContactImageViewBack.setOnClickListener { imageViewBackListener() }
+        binding.dialogAddContactButtonSave.setOnClickListener { saveButtonListener() }
 
         try {
             listener = requireParentFragment() as ConfirmationListener
@@ -38,15 +40,15 @@ class AddContactDialogFragment : DialogFragment() {
 
     private fun saveButtonListener() {
         listener.onConfirmButtonClicked(
-            with(_binding) {
+            with(binding) {
                 Contact (
                     name = dialogAddContactEditTextUsername.text.toString().ifBlank { DEFAULT_NAME },
                     career = dialogAddContactEditTextCareer.text.toString(),
-                    photo = "",
-                    email = "",
-                    phone = "",
-                    address = "",
-                    dateOfBirthday = ""
+//                    photo = dialogAddContactImageViewProfilePhoto.toString(),
+                    email = dialogAddContactEditTextEmail.toString(),
+                    phone = dialogAddContactEditTextPhone.toString(),
+                    address = dialogAddContactEditTextAddress.toString(),
+                    dateOfBirthday = dialogAddContactEditTextDateOfBirth.toString()
                 )
             }
         )
@@ -57,7 +59,12 @@ class AddContactDialogFragment : DialogFragment() {
         dismiss()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
-        const val TAG_ADD_CONTACT = "Add contact dialog"
+        val TAG_ADD_CONTACT : String = AddContactDialogFragment::class.java.name
     }
 }

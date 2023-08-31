@@ -9,9 +9,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.messengerApp.R
-import com.example.messengerApp.ui.utils.constants.Constants.TRANSITION_NAME_CAREER
-import com.example.messengerApp.ui.utils.constants.Constants.TRANSITION_NAME_CONTACT_NAME
-import com.example.messengerApp.ui.utils.constants.Constants.TRANSITION_NAME_IMAGE
+import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_CAREER
+import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_CONTACT_NAME
+import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_IMAGE
 import com.example.messengerApp.databinding.ContactItemBinding
 import com.example.messengerApp.ui.main.viewpager.myContacts.model.ContactListItem
 import com.example.messengerApp.ui.main.viewpager.myContacts.adapter.diffUtil.ContactDiffUtil
@@ -40,11 +40,7 @@ class ContactAdapter(
                 contactItemTextViewName.text = contact.name
                 contactItemTextViewCareer.text = contact.career.replaceFirstChar { it.titlecase() }
 
-                with(contactItemImageViewProfilePhoto) {
-                    if (contact.photo.isNotBlank())
-                        setContactPhoto(contact.photo)
-                    else setContactPhoto()
-                }
+                contactItemImageViewProfilePhoto.setContactPhoto(contact.photo)
             }
             setListeners(contact)
         }

@@ -4,20 +4,21 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.example.messengerApp.R
 import com.example.messengerApp.base.BaseFragment
 import com.example.messengerApp.data.models.Contact
 import com.example.messengerApp.databinding.FragmentContactProfileBinding
-import com.example.messengerApp.ui.utils.constants.Constants.TRANSITION_NAME_CAREER
-import com.example.messengerApp.ui.utils.constants.Constants.TRANSITION_NAME_CONTACT_NAME
-import com.example.messengerApp.ui.utils.constants.Constants.TRANSITION_NAME_IMAGE
+import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_CAREER
+import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_CONTACT_NAME
+import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_IMAGE
 import com.example.messengerApp.ui.utils.ext.setContactPhoto
 
 class ContactProfileFragment
     : BaseFragment<FragmentContactProfileBinding>(FragmentContactProfileBinding::inflate){
 
-    private val viewModel : ContactProfileModelView by viewModels()
+    private val args : ContactProfileFragmentArgs by navArgs()
 
     // TODO: from popBackStack() to navigateUp()
 
@@ -25,7 +26,7 @@ class ContactProfileFragment
         super.onViewCreated(view, savedInstanceState)
 
         attachAnimation()
-        bindContactInfo(viewModel.contact)
+        bindContactInfo(args.contact)
         setListeners()
     }
 
@@ -43,7 +44,7 @@ class ContactProfileFragment
     }
 
     private fun setListeners() {
-        binding.fragmentMyProfileTextViewBack.setOnClickListener { findNavController().popBackStack() }
+        binding.fragmentMyProfileTextViewBack.setOnClickListener { navController.popBackStack() }
     }
 
     private fun bindContactInfo(contact: Contact) {

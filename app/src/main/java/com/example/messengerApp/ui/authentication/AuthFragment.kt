@@ -7,11 +7,8 @@ import androidx.fragment.app.viewModels
 import com.example.messengerApp.R
 import com.example.messengerApp.base.BaseFragment
 import com.example.messengerApp.databinding.FragmentAuthBinding
-import com.example.messengerApp.ui.utils.constants.Constants.PASSWORD_LENGTH
-import com.example.messengerApp.ui.utils.constants.Validation.CODE_DIGITS
-import com.example.messengerApp.ui.utils.constants.Validation.CODE_LENGTH
-import com.example.messengerApp.ui.utils.constants.Validation.CODE_SPACES
-import com.example.messengerApp.ui.utils.constants.Validation.CODE_UPPER_CASE
+import com.example.messengerApp.ui.utils.Constants.PASSWORD_LENGTH
+import com.example.messengerApp.ui.utils.Validation.CODES.*
 
 class AuthFragment
     : BaseFragment<FragmentAuthBinding>(FragmentAuthBinding::inflate) {
@@ -30,8 +27,8 @@ class AuthFragment
 
     private fun setListeners() {
         with(binding) {
-            fragmentAuthButtonRegister.setOnClickListener { registerButton() }
-            fragmentAuthButtonGoogle.setOnClickListener { googleButtonAction() }
+            buttonRegister.setOnClickListener { registerButton() }
+            buttonGoogle.setOnClickListener { googleButtonAction() }
         }
     }
 
@@ -40,13 +37,16 @@ class AuthFragment
     }
 
     private fun registerButton() {
-        if (!fieldsIsEmpty()) {
-            startNextFragment()
+        with(binding) {
+            if (viewModel.emailIsValid(editTextEmail.text.toString())
+                && viewModel.passwordIsValid(editTextPassword.text.toString()) == null) {
+                startNextFragment()
+            }
         }
     }
 
     private fun startNextFragment() {
-        val email = binding.fragmentAuthEditTextEmail.text.toString()
+        val email = binding.editTextEmail.text.toString()
 
         val direction = AuthFragmentDirections.startMainActivity(email)
 
@@ -55,10 +55,10 @@ class AuthFragment
 
     private fun emailErrorChanges() {
         with(binding) {
-            fragmentAuthEditTextEmail.doAfterTextChanged {
-                val email = fragmentAuthEditTextEmail.text.toString()
-                fragmentAuthContainerEmail.error =
-                    if (viewModel.emailIsValid(email))
+            editTextEmail.doAfterTextChanged {
+                val email = editTextEmail.text.toString()
+                containerEmail.error =
+                    if (!viewModel.emailIsValid(email))
                         getString(R.string.invalid_email_address)
                     else
                         null
@@ -68,9 +68,9 @@ class AuthFragment
 
     private fun passwordErrorChanges() {
         with(binding) {
-            fragmentAuthEditTextPassword.doAfterTextChanged {
-                val password = binding.fragmentAuthEditTextPassword.text.toString()
-                fragmentAuthContainerPassword.error =
+            editTextPassword.doAfterTextChanged {
+                val password = binding.editTextPassword.text.toString()
+                containerPassword.error =
                     when (viewModel.passwordIsValid(password)) {
                         CODE_SPACES -> getString(R.string.dont_use_spaces)
                         CODE_LENGTH -> getString(R.string.min_length_password, PASSWORD_LENGTH)
@@ -79,21 +79,6 @@ class AuthFragment
                         else -> null
                     }
             }
-        }
-    }
-
-    private fun fieldsIsEmpty(): Boolean {
-        with(binding) {
-            val validEmail = fragmentAuthContainerEmail.error == null
-                    && fragmentAuthEditTextPassword.text.toString().isNotEmpty()
-
-            val validPassword = fragmentAuthContainerPassword.error == null
-                    && fragmentAuthEditTextPassword.text.toString().isNotEmpty()
-
-            if (validEmail && validPassword)
-                return false
-
-            return true
         }
     }
 }

@@ -4,25 +4,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.example.messengerApp.base.BaseFragment
 import com.example.messengerApp.databinding.FragmentMyProfileBinding
 import com.example.messengerApp.ui.authentication.AuthActivity
 import com.example.messengerApp.ui.main.viewpager.ViewPagerFragment
-import com.example.messengerApp.ui.utils.constants.Validation.REGEX_EMAIL_PARSE
+import com.example.messengerApp.ui.utils.Constants
 import com.example.messengerApp.ui.utils.ext.setContactPhoto
-import java.util.Locale
 
 class MyProfileFragment
     : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
 
     private val viewModel : MyProfileViewModel by viewModels()
 
+    private val args : MyProfileFragmentArgs by navArgs()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setListeners()
         roundProfilePhoto()
-        setNameByEmail(viewModel.userEmail)
+        viewModel.setNameByEmail(args.email)
     }
 
     private fun roundProfilePhoto() {
@@ -30,19 +32,6 @@ class MyProfileFragment
             fragmentMyProfileImageViewProfilePhoto.setContactPhoto(
                 fragmentMyProfileImageViewProfilePhoto.drawable
             )
-        }
-    }
-
-    private fun setNameByEmail(email: String): String {
-        val parsedName = parseEmail(email)
-
-        return if (parsedName.size > 1) {
-            val name = parsedName.first().replaceFirstChar { it.titlecase(Locale.getDefault()) }
-            val surname = parsedName[1].replaceFirstChar { it.titlecase(Locale.getDefault()) }
-
-            "$name $surname"
-        } else {
-            parsedName.first()
         }
     }
 
@@ -59,11 +48,6 @@ class MyProfileFragment
     }
 
     private fun viewMyContactsButton() {
-        (parentFragment as ViewPagerFragment).openTab(1)
+        (parentFragment as ViewPagerFragment).openTab(Constants.SCREENS.CONTACTS_SCREEN.ordinal)
     }
-
-    private fun parseEmail(email: String): List<String> {
-        return REGEX_EMAIL_PARSE.toRegex().replace(email, "").split(".")
-    }
-
 }

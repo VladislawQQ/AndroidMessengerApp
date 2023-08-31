@@ -1,4 +1,4 @@
-package com.example.messengerApp.ui.utils.constants
+package com.example.messengerApp.ui.utils
 
 import android.util.Patterns
 
@@ -11,26 +11,29 @@ object Validation {
     // Parse email
     const val REGEX_EMAIL_PARSE = "@.*\$"
 
-    // Error codes for password validation
-    const val CODE_SPACES = 0
-    const val CODE_LENGTH = 1
-    const val CODE_UPPER_CASE = 2
-    const val CODE_DIGITS = 3
+
 
     // validate email
     fun emailIsValid(email : String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
     // validate password
-    fun passwordIsValid(password: String): Int? {
+    fun passwordIsValid(password: String): CODES? {
         return if (password.contains(" ")) {
-            CODE_SPACES
+            CODES.CODE_SPACES
         } else if (password.length < Constants.PASSWORD_LENGTH) {
-            CODE_LENGTH
+            CODES.CODE_LENGTH
         } else if (!REGEX_UPPER_CASE.toRegex().containsMatchIn(password)) {
-            CODE_UPPER_CASE
+            CODES.CODE_UPPER_CASE
         } else if (!REGEX_DIGITS.toRegex().containsMatchIn(password)) {
-            CODE_DIGITS
+            CODES.CODE_DIGITS
         } else null
     }
 
+    // Error codes for password validation
+    enum class CODES {
+        CODE_SPACES,
+        CODE_LENGTH,
+        CODE_UPPER_CASE,
+        CODE_DIGITS
+    }
 }

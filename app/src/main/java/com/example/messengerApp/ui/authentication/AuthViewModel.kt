@@ -1,7 +1,7 @@
 package com.example.messengerApp.ui.authentication
 
 import androidx.lifecycle.ViewModel
-import com.example.messengerApp.ui.utils.constants.Validation
+import com.example.messengerApp.ui.utils.Validation
 
 class AuthViewModel : ViewModel() {
 
@@ -17,6 +17,6 @@ class AuthViewModel : ViewModel() {
      * if !isValid return String
      * else return null
      */
-    fun passwordIsValid(password: String): Int? = Validation.passwordIsValid(password)
+    fun passwordIsValid(password: String): Validation.CODES? = Validation.passwordIsValid(password)
 
 }

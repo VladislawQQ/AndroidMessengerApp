@@ -2,12 +2,21 @@ package com.example.messengerApp.ui.main.viewpager.myProfile
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.messengerApp.ui.utils.Parser
+import java.util.Locale
 
-class MyProfileViewModel(
-    savedStateHandle: SavedStateHandle
-) : ViewModel() {
+class MyProfileViewModel() : ViewModel() {
 
-    private val args = MyProfileFragmentArgs.fromSavedStateHandle(savedStateHandle)
+    fun setNameByEmail(email: String): String {
+        val parsedName = Parser.parseEmail(email)
 
-    val userEmail = args.email
+        return if (parsedName.size > 1) {
+            val name = parsedName.first().replaceFirstChar { it.titlecase(Locale.getDefault()) }
+            val surname = parsedName[1].replaceFirstChar { it.titlecase(Locale.getDefault()) }
+
+            "$name $surname"
+        } else {
+            parsedName.first()
+        }
+    }
 }
