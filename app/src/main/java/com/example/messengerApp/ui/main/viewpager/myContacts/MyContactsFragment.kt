@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -13,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.FragmentNavigatorExtras
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,8 +31,10 @@ import com.example.messengerApp.ui.main.viewpager.myContacts.addContact.Confirma
 import com.example.messengerApp.ui.main.viewpager.myContacts.model.ContactListItem
 import com.example.messengerApp.ui.utils.Constants
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MyContactsFragment :
     BaseFragment<FragmentMyContactsBinding>(FragmentMyContactsBinding::inflate),
     ConfirmationListener {
@@ -89,15 +91,21 @@ class MyContactsFragment :
     private fun setListeners() {
         with(binding) {
             fragmentMyContactTextViewAddContact.setOnClickListener { startDialogAddContact() }
-            fragmentMyContactsImageViewBack.setOnClickListener { imageViewBackListener() }
+            fragmentMyContactsImageViewBack.setOnClickListener { backPressedListener() }
             textViewGetContacts.setOnClickListener { requestReadContactsPermission() }
             imageViewBucket.setOnClickListener { viewModel.deleteSelectedItems() }
             fragmentMyContactImageViewSearch.setOnClickListener { } // TODO: search in contacts
+            backPressedListener()
         }
     }
 
-    private fun imageViewBackListener() {
-        (parentFragment as ViewPagerFragment).openTab(Constants.SCREENS.PROFILE_SCREEN.ordinal)
+    private fun backPressedListener() {
+        val callBack = object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                (parentFragment as ViewPagerFragment).openTab(Constants.SCREENS.PROFILE_SCREEN.ordinal)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callBack)
     }
 
     private fun startDialogAddContact() {

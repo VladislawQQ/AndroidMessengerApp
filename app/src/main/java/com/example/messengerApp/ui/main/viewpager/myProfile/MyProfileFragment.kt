@@ -11,7 +11,9 @@ import com.example.messengerApp.ui.authentication.AuthActivity
 import com.example.messengerApp.ui.main.viewpager.ViewPagerFragment
 import com.example.messengerApp.ui.utils.Constants
 import com.example.messengerApp.ui.utils.ext.setContactPhoto
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyProfileFragment
     : BaseFragment<FragmentMyProfileBinding>(FragmentMyProfileBinding::inflate) {
 
@@ -24,7 +26,8 @@ class MyProfileFragment
 
         setListeners()
         roundProfilePhoto()
-        viewModel.setNameByEmail(args.email)
+
+        setUserName(viewModel.setNameByEmail(args.email))
     }
 
     private fun roundProfilePhoto() {
@@ -49,5 +52,9 @@ class MyProfileFragment
 
     private fun viewMyContactsButton() {
         (parentFragment as ViewPagerFragment).openTab(Constants.SCREENS.CONTACTS_SCREEN.ordinal)
+    }
+
+    private fun setUserName(nameByEmail: String) {
+        binding.fragmentMyProfileTextViewProfileName.text = nameByEmail
     }
 }

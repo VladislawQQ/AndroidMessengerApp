@@ -7,8 +7,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-open class ContactMultiSelectHandler : MultiSelectHandler<Contact>, MultiSelectState<Contact> {
+open class ContactMultiSelectHandler @Inject constructor(
+) : MultiSelectHandler<Contact> {
 
     private val checkedIds = HashSet<Long>()
     private var items: List<Contact> = emptyList()

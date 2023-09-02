@@ -1,19 +1,23 @@
-package com.example.messengerApp.data.contacts
+package com.example.messengerApp.data.repository
 
 import com.example.messengerApp.data.models.Contact
+import com.example.messengerApp.data.repository.interfaces.ContactService
 import com.example.messengerApp.ui.main.viewpager.myContacts.multiselect.ContactMultiSelectHandler
 import com.example.messengerApp.ui.main.viewpager.myContacts.multiselect.MultiSelectState
 import com.example.messengerApp.ui.utils.ext.logExt
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
 
-class ContactService : ContactMultiSelectHandler() {
+
+class ContactServiceImpl @Inject constructor(
+) : ContactService, ContactMultiSelectHandler() {
 
     private val _contacts = MutableStateFlow<List<Contact>>(emptyList())
-    val contacts = _contacts.asStateFlow()
+    override val contacts = _contacts.asStateFlow()
 
-    private val contactProvider = ContactGenerator()
+    private val contactProvider = ContactGeneratorImpl()
     private var lastDeleteContact: Contact? = null
     private var lastDeleteIndex: Int? = null
 
@@ -21,12 +25,12 @@ class ContactService : ContactMultiSelectHandler() {
         setContacts()
     }
 
-    private fun setContacts() {
+    override fun setContacts() {
         _contacts.value = contactProvider.generateContacts().value
         logExt(_contacts.value.size.toString())
     }
 
-    fun setPhoneContacts() {
+    override fun setPhoneContacts() {
         val contactsPhone = MutableStateFlow<List<Contact>>(emptyList())
 
         try {
@@ -39,7 +43,7 @@ class ContactService : ContactMultiSelectHandler() {
         _contacts.value = contactsPhone.value
     }
 
-    fun deleteContact(index: Int) {
+    override fun deleteContact(index: Int) {
         if (index == -1) return
 
         lastDeleteIndex = index
@@ -50,7 +54,7 @@ class ContactService : ContactMultiSelectHandler() {
         }
     }
 
-    fun restoreContact() {
+    override fun restoreContact() {
         _contacts.value = _contacts.value.toMutableList().apply {
             if (lastDeleteIndex != null && lastDeleteContact != null) {
                 add(lastDeleteIndex!!, lastDeleteContact!!)
@@ -60,13 +64,13 @@ class ContactService : ContactMultiSelectHandler() {
         }
     }
 
-    fun addContact(contact: Contact) {
+    override fun addContact(contact: Contact) {
         _contacts.value = _contacts.value.toMutableList().apply {
             add(contact)
         }
     }
 
-    fun deleteSelectedItems(multiChoiceState: MultiSelectState<Contact>) {
+    override fun deleteSelectedItems(multiChoiceState: MultiSelectState<Contact>) {
         _contacts.update { oldList ->
             oldList.filter { contact -> !multiChoiceState.isChecked(contact) }
         }

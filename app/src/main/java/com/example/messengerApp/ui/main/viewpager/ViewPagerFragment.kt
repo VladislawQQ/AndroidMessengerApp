@@ -10,6 +10,7 @@ import com.example.messengerApp.databinding.FragmentViewPagerBinding
 import com.example.messengerApp.base.BaseFragment
 import com.example.messengerApp.ui.main.viewpager.myContacts.MyContactsFragment
 import com.example.messengerApp.ui.main.viewpager.myProfile.MyProfileFragment
+import com.example.messengerApp.ui.utils.Constants
 import com.example.messengerApp.ui.utils.Constants.SCREENS.*
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -26,6 +27,7 @@ class ViewPagerFragment
     private fun setViewPager() {
         with(binding) {
             viewPager.adapter = ViewPagerAdapter(this@ViewPagerFragment)
+            viewPager.offscreenPageLimit = Constants.SCREENS.values().size
             TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                 tab.text = when(values()[position]) {
                     PROFILE_SCREEN -> getString(R.string.fragment_my_profile_name)

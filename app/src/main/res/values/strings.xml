@@ -15,6 +15,13 @@
     <string name="linkedin_icon">linkedin_icon</string>
     <string name="instagram_icon">instagram_icon</string>
 
+    <!-- fragment login strings -->
+
+    <string name="hello">Hello!</string>
+    <string name="enter_your_email_and_password_below">Enter your email and password below</string>
+    <string name="sign_up">Sign up</string>
+    <string name="don_t_have_account">Don’t have account?</string>
+
     <!-- fragment auth strings -->
 
     <string name="let_s_get_acquainted">Let\'s get acquainted</string>
@@ -56,5 +63,6 @@
     <string name="message">message</string>
     <string name="fragment_my_profile_logout">Logout</string>
     <string name="get_contacts">Get contacts</string>
+    <string name="forgot_your_password">Forgot your password?</string>
 
 </resources>

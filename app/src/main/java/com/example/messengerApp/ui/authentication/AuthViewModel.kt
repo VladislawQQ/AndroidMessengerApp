@@ -2,8 +2,12 @@ package com.example.messengerApp.ui.authentication
 
 import androidx.lifecycle.ViewModel
 import com.example.messengerApp.ui.utils.Validation
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+) : ViewModel() {
 
     /**
      * Check if email is valid with Patterns.EMAIL_ADDRESS

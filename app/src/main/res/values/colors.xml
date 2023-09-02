@@ -25,4 +25,8 @@
     <!-- snackbar color -->
     <color name="contacts_activity_class_snackbar_text_color">#000</color>
     <color name="contacts_activity_class_snackbar_action_color">#FF6200EE</color>
+
+    <!-- progress bar color -->
+    <color name="splash_screen_progress_bar">#828282</color>
+
 </resources>

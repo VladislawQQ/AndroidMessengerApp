@@ -9,7 +9,9 @@ import com.example.messengerApp.base.BaseFragment
 import com.example.messengerApp.databinding.FragmentAuthBinding
 import com.example.messengerApp.ui.utils.Constants.PASSWORD_LENGTH
 import com.example.messengerApp.ui.utils.Validation.CODES.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AuthFragment
     : BaseFragment<FragmentAuthBinding>(FragmentAuthBinding::inflate) {
 

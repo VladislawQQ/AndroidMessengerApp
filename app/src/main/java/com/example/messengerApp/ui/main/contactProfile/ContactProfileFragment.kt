@@ -2,8 +2,6 @@ package com.example.messengerApp.ui.main.contactProfile
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.example.messengerApp.R
@@ -14,13 +12,13 @@ import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_CAREER
 import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_CONTACT_NAME
 import com.example.messengerApp.ui.utils.Constants.TRANSITION_NAME_IMAGE
 import com.example.messengerApp.ui.utils.ext.setContactPhoto
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ContactProfileFragment
     : BaseFragment<FragmentContactProfileBinding>(FragmentContactProfileBinding::inflate){
 
     private val args : ContactProfileFragmentArgs by navArgs()
-
-    // TODO: from popBackStack() to navigateUp()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,7 +42,7 @@ class ContactProfileFragment
     }
 
     private fun setListeners() {
-        binding.fragmentMyProfileTextViewBack.setOnClickListener { navController.popBackStack() }
+        binding.fragmentMyProfileTextViewBack.setOnClickListener { navController.navigateUp() }
     }
 
     private fun bindContactInfo(contact: Contact) {

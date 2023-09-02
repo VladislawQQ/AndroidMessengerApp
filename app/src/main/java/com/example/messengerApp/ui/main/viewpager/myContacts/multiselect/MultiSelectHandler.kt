@@ -1,9 +1,10 @@
 package com.example.messengerApp.ui.main.viewpager.myContacts.multiselect
 
+import com.example.messengerApp.data.models.Contact
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
-interface MultiSelectHandler<T : Any> {
+interface MultiSelectHandler<T : Any> : MultiSelectState<Contact> {
 
     /**
      * Set the list flow which will be observed by the handler in order
@@ -36,6 +37,4 @@ interface MultiSelectHandler<T : Any> {
      * Uncheck the specified item in the list.
      */
     fun clear(item: T)
-
-
 }

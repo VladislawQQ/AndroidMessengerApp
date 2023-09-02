@@ -4,14 +4,17 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.example.messengerApp.ui.utils.Constants.DEFAULT_NAME
-import com.example.messengerApp.data.models.Contact
+import androidx.fragment.app.viewModels
 import com.example.messengerApp.databinding.DialogAddContactBinding
+import com.example.messengerApp.ui.utils.Constants.DEFAULT_NAME
 import com.example.messengerApp.ui.utils.ext.setContactPhoto
+import dagger.hilt.android.AndroidEntryPoint
 
-open class AddContactDialogFragment : DialogFragment() {
 
-    private lateinit var listener: ConfirmationListener
+@AndroidEntryPoint
+class AddContactDialogFragment : DialogFragment() {
+
+    private val viewModel : AddContactViewModel by viewModels()
 
     private var _binding: DialogAddContactBinding? = null
     private val binding get() = requireNotNull(_binding)
@@ -28,30 +31,24 @@ open class AddContactDialogFragment : DialogFragment() {
     }
 
     private fun setListeners() {
-        binding.dialogAddContactImageViewBack.setOnClickListener { imageViewBackListener() }
-        binding.dialogAddContactButtonSave.setOnClickListener { saveButtonListener() }
-
-        try {
-            listener = requireParentFragment() as ConfirmationListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException("$context or ${requireParentFragment()} must implement ConfirmationListener")
+        with(binding) {
+            dialogAddContactImageViewBack.setOnClickListener { imageViewBackListener() }
+            dialogAddContactButtonSave.setOnClickListener { saveButtonListener() }
         }
     }
 
     private fun saveButtonListener() {
-        listener.onConfirmButtonClicked(
-            with(binding) {
-                Contact (
-                    name = dialogAddContactEditTextUsername.text.toString().ifBlank { DEFAULT_NAME },
-                    career = dialogAddContactEditTextCareer.text.toString(),
-//                    photo = dialogAddContactImageViewProfilePhoto.toString(),
-                    email = dialogAddContactEditTextEmail.toString(),
-                    phone = dialogAddContactEditTextPhone.toString(),
-                    address = dialogAddContactEditTextAddress.toString(),
-                    dateOfBirthday = dialogAddContactEditTextDateOfBirth.toString()
-                )
-            }
-        )
+        with(binding) {
+            viewModel.saveNewContact(
+                name = dialogAddContactEditTextUsername.text.toString().ifBlank { DEFAULT_NAME },
+                career = dialogAddContactEditTextCareer.text.toString(),
+                photo = dialogAddContactImageViewProfilePhoto.toString(),
+                email = dialogAddContactEditTextEmail.toString(),
+                phone = dialogAddContactEditTextPhone.toString(),
+                address = dialogAddContactEditTextAddress.toString(),
+                dateOfBirthday = dialogAddContactEditTextDateOfBirth.toString()
+            )
+        }
         dismiss()
     }
 

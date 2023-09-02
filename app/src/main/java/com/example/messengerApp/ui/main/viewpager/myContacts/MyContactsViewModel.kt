@@ -3,21 +3,24 @@ package com.example.messengerApp.ui.main.viewpager.myContacts
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.messengerApp.data.contacts.ContactService
 import com.example.messengerApp.data.models.Contact
+import com.example.messengerApp.data.repository.interfaces.ContactService
 import com.example.messengerApp.ui.main.viewpager.myContacts.model.ContactListItem
-import com.example.messengerApp.ui.main.viewpager.myContacts.multiselect.ContactMultiSelectHandler
+import com.example.messengerApp.ui.main.viewpager.myContacts.multiselect.MultiSelectHandler
 import com.example.messengerApp.ui.main.viewpager.myContacts.multiselect.MultiSelectState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyContactsViewModel : ViewModel() {
-
-    private val contactService = ContactService()
-    private val contactMultiSelectHandler = ContactMultiSelectHandler()
+@HiltViewModel
+class MyContactsViewModel @Inject constructor(
+    private val contactService : ContactService,
+    private val contactMultiSelectHandler : MultiSelectHandler<Contact>
+) : ViewModel() {
 
     private val _stateFlow = MutableStateFlow(emptyList<ContactListItem>())
     val stateFlow = _stateFlow.asStateFlow()
@@ -26,10 +29,10 @@ class MyContactsViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            contactMultiSelectHandler.setItemsFlow(viewModelScope, contactService.contacts)
+            this@MyContactsViewModel.contactMultiSelectHandler.setItemsFlow(viewModelScope, this@MyContactsViewModel.contactService.contacts)
             val combinedFlow = combine(
-                contactService.contacts,
-                contactMultiSelectHandler.listen(),
+                this@MyContactsViewModel.contactService.contacts,
+                this@MyContactsViewModel.contactMultiSelectHandler.listen(),
                 ::merge
             )
             combinedFlow.collect { flow ->
@@ -38,32 +41,35 @@ class MyContactsViewModel : ViewModel() {
         }
     }
 
-    fun setPhoneContacts() = contactService.setPhoneContacts()
-    fun deleteContact(index: Int) = contactService.deleteContact(index)
-    fun deleteContact(contact: Contact) = contactService.deleteContact(contactService.contacts.value.indexOf(contact))
+    fun setPhoneContacts() = this.contactService.setPhoneContacts()
+    fun deleteContact(index: Int) = this.contactService.deleteContact(index)
+    fun deleteContact(contact: Contact) = this.contactService.deleteContact(this.contactService.contacts.value.indexOf(contact))
 
     /**
      * Delete all selected cats
      */
     fun deleteSelectedItems() {
         viewModelScope.launch {
-            val currentMultiChoiceState = contactMultiSelectHandler.listen().first()
-            contactService.deleteSelectedItems(currentMultiChoiceState)
+            val currentMultiChoiceState = this@MyContactsViewModel.contactMultiSelectHandler.listen().first()
+            this@MyContactsViewModel.contactService.deleteSelectedItems(currentMultiChoiceState)
         }
+
+        swapIsMultiselect()
+        clearSelectedItems()
     }
-    fun restoreContact() = contactService.restoreContact()
+    fun restoreContact() = this.contactService.restoreContact()
 
     fun addContact(contact: Contact) {
-        contactService.addContact(contact)
+        this.contactService.addContact(contact)
     }
     fun clearSelectedItems() {
-        contactMultiSelectHandler.clearAll()
+        this.contactMultiSelectHandler.clearAll()
     }
     fun toggle(contact: ContactListItem) {
-        contactMultiSelectHandler.toggle(contact.contact)
+        this.contactMultiSelectHandler.toggle(contact.contact)
     }
 
-    fun contactsIsSelected() : Boolean = contactMultiSelectHandler.totalCheckedCount > 0
+    fun contactsIsSelected() : Boolean = this.contactMultiSelectHandler.totalCheckedCount > 0
 
     fun swapIsMultiselect() {
         isMultiselect.value = isMultiselect.value == false

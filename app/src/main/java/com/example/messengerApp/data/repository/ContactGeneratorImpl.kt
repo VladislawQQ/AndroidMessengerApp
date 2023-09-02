@@ -1,24 +1,28 @@
-package com.example.messengerApp.data.contacts
+package com.example.messengerApp.data.repository
 
 import android.annotation.SuppressLint
 import android.provider.ContactsContract
 import com.example.messengerApp.App
 import com.example.messengerApp.ui.utils.Constants.COUNT_OF_CONTACTS
 import com.example.messengerApp.data.models.Contact
+import com.example.messengerApp.data.repository.interfaces.ContactGenerator
 import com.github.javafaker.Faker
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.Random
+import javax.inject.Inject
 
-class ContactGenerator {
+class ContactGeneratorImpl @Inject constructor(
+): ContactGenerator {
+
     private val faker = Faker.instance()
 
-    fun generateContacts(): MutableStateFlow<List<Contact>> {
+    override fun generateContacts(): MutableStateFlow<List<Contact>> {
         return MutableStateFlow(
             List(COUNT_OF_CONTACTS) { randomContact() }
         )
     }
 
-    private fun randomContact(): Contact {
+    override fun randomContact(): Contact {
         return Contact(
             name = faker.name().fullName(),
             career = faker.job().position(),
@@ -27,7 +31,7 @@ class ContactGenerator {
     }
 
     @SuppressLint("Range")
-    fun getPhoneContacts(): MutableList<Contact> {
+    override fun getPhoneContacts(): MutableList<Contact> {
 
         val contactList: MutableList<Contact> = ArrayList()
 

@@ -1,11 +1,15 @@
 package com.example.messengerApp.ui.main.viewpager.myProfile
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.messengerApp.ui.utils.Constants
 import com.example.messengerApp.ui.utils.Parser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Locale
+import javax.inject.Inject
 
-class MyProfileViewModel() : ViewModel() {
+@HiltViewModel
+class MyProfileViewModel @Inject constructor(
+) : ViewModel() {
 
     fun setNameByEmail(email: String): String {
         val parsedName = Parser.parseEmail(email)
@@ -16,7 +20,7 @@ class MyProfileViewModel() : ViewModel() {
 
             "$name $surname"
         } else {
-            parsedName.first()
+            parsedName.first().ifEmpty { Constants.DEFAULT_NAME }
         }
     }
 }
