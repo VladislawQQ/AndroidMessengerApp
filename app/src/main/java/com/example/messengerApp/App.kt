@@ -10,7 +10,6 @@ class App : Application() {
         super.onCreate()
         app = this
     }
-
     companion object {
         private lateinit var app: App
         val contentResolverInstance: ContentResolver get() = app.contentResolver

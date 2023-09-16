@@ -62,7 +62,8 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.7.2"
 
     // Glide for images
-    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     // Faker for fake data
     implementation 'com.github.javafaker:javafaker:1.0.2'
@@ -73,10 +74,24 @@ dependencies {
 
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+
+    // Okhttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 }
 
 // Hilt
 kapt {
-    correctErrorTypes true // Allow references to generated code
+    // Allow references to generated code
+    correctErrorTypes true
+}
+
+hilt {
+    // https://dagger.dev/hilt/gradle-setup.html
+    enableAggregatingTask = true
 }

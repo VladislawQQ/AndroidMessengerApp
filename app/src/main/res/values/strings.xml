@@ -42,11 +42,17 @@
     <string name="contain_upper_case_chars">Must contain upper-case characters</string>
     <string name="contain_digit_chars">Must contain number characters</string>
     <string name="invalid_email_address">Invalid Email Address</string>
+    <string name="invalid_password">Invalid password</string>
 
     <!-- Snackbar message -->
     <string name="message_delete">Contact has been deleted</string>
     <string name="message_add_contact">Contact has been added</string>
     <string name="snackbar_action">undo</string>
+    <string name="snackbar_register_error">Something went wrong</string>
+    <string name="snackbar_account_already_exists_error">Account already exist</string>
+    <string name="snackbar_backend_error">Server is not responding</string>
+    <string name="snackbar_parse_backend_response_error">Parse backend response error</string>
+    <string name="snackbar_conection_error">Connection error</string>
 
     <!-- Fragment my contacts and dialog add contact -->
 
