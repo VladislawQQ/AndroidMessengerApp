@@ -1,4 +1,4 @@
-package com.example.messengerApp.presentation.ui.authentication.auth
+package com.example.messengerApp.presentation.ui.authentication.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,10 +10,7 @@ import com.example.messengerApp.data.remote.dto.UserLoginResponseDto
 import com.example.messengerApp.data.remote.dto.UserRequestDto
 import com.example.messengerApp.data.source.RetrofitAccountsSource
 import com.example.messengerApp.domain.repository.SharedPrefSource
-import com.example.messengerApp.presentation.ui.authentication.auth.ErrorMessages.ACCOUNT_ALREADY_EXIST_ERROR
-import com.example.messengerApp.presentation.ui.authentication.auth.ErrorMessages.BACKEND_ERROR
-import com.example.messengerApp.presentation.ui.authentication.auth.ErrorMessages.CONNECTION_ERROR
-import com.example.messengerApp.presentation.ui.authentication.auth.ErrorMessages.REGISTER_ERROR
+import com.example.messengerApp.presentation.ui.authentication.auth.ErrorMessages
 import com.example.messengerApp.presentation.utils.Validation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,18 +20,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val accountsSource: RetrofitAccountsSource,
 ) : ViewModel() {
 
-    private val _registerStateFlow = MutableStateFlow<Resource<UserLoginResponseDto>>(Resource.Empty())
+    private val _registerStateFlow =
+        MutableStateFlow<Resource<UserLoginResponseDto>>(Resource.Empty())
     val registerState = _registerStateFlow.asStateFlow()
 
-    fun registerUser(body: UserRequestDto, saveToken: Boolean) =
+    fun loginUser(body: UserRequestDto, saveToken: Boolean) =
         viewModelScope.launch(Dispatchers.IO) {
             _registerStateFlow.value = Resource.Loading()
             try {
-                val response = accountsSource.registerUser(body)
+                val response = accountsSource.loginUser(body)
                 when (response.code) {
                     200 -> {
                         if (saveToken) {
@@ -43,21 +41,22 @@ class AuthViewModel @Inject constructor(
                         }
                         _registerStateFlow.value = Resource.Success(response.data)
                     }
-                    400 -> {
-                        _registerStateFlow.value = Resource.Error(response.message)
-                    }
-                    else -> {
+                    401 -> {
                         _registerStateFlow.value = Resource.Error(response.message)
                     }
                 }
-            } catch (e : BackendException) {
-                _registerStateFlow.value = Resource.Error(message = BACKEND_ERROR)
-            } catch (e : AccountAlreadyExistsException) {
-                _registerStateFlow.value = Resource.Error(message = ACCOUNT_ALREADY_EXIST_ERROR)
-            } catch (e : ConnectionException) {
-                _registerStateFlow.value = Resource.Error(message = CONNECTION_ERROR)
-            } catch (e : Exception) {
-                _registerStateFlow.value = Resource.Error(message = REGISTER_ERROR)
+            } catch (e: BackendException) {
+                _registerStateFlow.value =
+                    Resource.Error(message = ErrorMessages.BACKEND_ERROR)
+            } catch (e: AccountAlreadyExistsException) {
+                _registerStateFlow.value =
+                    Resource.Error(message = ErrorMessages.ACCOUNT_ALREADY_EXIST_ERROR)
+            } catch (e: ConnectionException) {
+                _registerStateFlow.value =
+                    Resource.Error(message = ErrorMessages.CONNECTION_ERROR)
+            } catch (e: Exception) {
+                _registerStateFlow.value =
+                    Resource.Error(message = ErrorMessages.REGISTER_ERROR)
             }
         }
 
@@ -78,5 +77,4 @@ class AuthViewModel @Inject constructor(
     fun validate(email: String, password: String): Boolean {
         return emailIsValid(email) && passwordIsValid(password) == null
     }
-
 }

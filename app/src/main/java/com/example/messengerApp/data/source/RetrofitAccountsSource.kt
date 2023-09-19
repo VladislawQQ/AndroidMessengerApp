@@ -2,7 +2,6 @@ package com.example.messengerApp.data.source
 
 import com.example.messengerApp.data.remote.dto.ContactRequestDto
 import com.example.messengerApp.data.remote.dto.UserEditDto
-import com.example.messengerApp.data.remote.dto.UserLoginResponseDto
 import com.example.messengerApp.data.remote.dto.UserRequestDto
 import com.example.messengerApp.data.remote.dto.UserResponseDto
 import javax.inject.Inject
@@ -15,7 +14,7 @@ class RetrofitAccountsSource @Inject constructor(
         return accountsApi.registerUser(body = body)
     }
 
-    suspend fun loginUser(body: UserRequestDto) : UserLoginResponseDto {
+    suspend fun loginUser(body: UserRequestDto) : UserResponseDto {
         return accountsApi.loginUser(body = body)
     }
 

@@ -2,7 +2,6 @@ package com.example.messengerApp.data.source
 
 import com.example.messengerApp.data.remote.dto.ContactRequestDto
 import com.example.messengerApp.data.remote.dto.UserEditDto
-import com.example.messengerApp.data.remote.dto.UserLoginResponseDto
 import com.example.messengerApp.data.remote.dto.UserRequestDto
 import com.example.messengerApp.data.remote.dto.UserResponseDto
 import retrofit2.http.Body
@@ -23,7 +22,7 @@ interface AccountsApi {
     @POST("login")
     suspend fun loginUser(
         @Body body: UserRequestDto
-    ): UserLoginResponseDto
+    ): UserResponseDto
 
     @POST("refresh")
     suspend fun refreshToken(@Header("refreshToken") refreshToken: String?): UserResponseDto

@@ -11,9 +11,6 @@
         android:label="fragment_splash_screen"
         tools:layout="@layout/fragment_splash_screen">
         <action
-            android:id="@+id/action_splashScreenFragment_to_authenticationFragment"
-            app:destination="@id/authenticationFragment" />
-        <action
             android:id="@+id/action_splashScreenFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
         <action
@@ -29,6 +26,9 @@
         <action
             android:id="@+id/startMainActivity"
             app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_authenticationFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <activity
@@ -40,6 +40,7 @@
             android:name="email"
             app:argType="string" />
     </activity>
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.messengerApp.presentation.ui.authentication.login.LoginFragment"
@@ -48,6 +49,9 @@
         <action
             android:id="@+id/action_loginFragment_to_mainActivity"
             app:destination="@id/mainActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment" />
     </fragment>
 
 </navigation>

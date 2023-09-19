@@ -173,7 +173,7 @@
         android:layout_marginBottom="@dimen/margin_medium"
 
         android:textAppearance="@style/open_sans_font"
-        android:text="@string/register"
+        android:text="@string/login"
         android:textAllCaps="true"
         android:textColor="@color/label_text_color"
         android:textSize="@dimen/fragment_auth_button_text_size"
@@ -187,7 +187,7 @@
         android:id="@+id/flow_text_views_sign_up"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="text_view_have_acc, text_view_sign_in"
+        app:constraint_referenced_ids="text_view_have_acc, text_view_sign_up"
         android:orientation="horizontal"
         app:flow_horizontalStyle="packed"
         app:flow_horizontalGap="@dimen/fragment_auth_sign_in_texts_gap"
@@ -207,7 +207,7 @@
         android:textSize="@dimen/fragment_auth_text_size_big" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_view_sign_in"
+        android:id="@+id/text_view_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -216,6 +216,20 @@
         android:textColor="@color/label_text_color"
         android:textSize="@dimen/fragment_auth_text_size_big"
         tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:id="@+id/ll_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <ProgressBar
+            android:id="@+id/progress_bar_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,8 @@ object Constants {
     const val SHARED_PREF_NAME = "remember me"
     const val SHARED_PREF_MODE = MODE_PRIVATE
     const val PREF_CURRENT_ACCOUNT_TOKEN = "currentToken"
+    const val PREF_AUTOLOGIN_EMAIL = "default"
+    const val PREF_AUTOLOGIN_PASS = "default"
 
     // Validation
     const val PASSWORD_LENGTH = 8

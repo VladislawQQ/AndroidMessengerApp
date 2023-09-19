@@ -2,8 +2,8 @@ package com.example.messengerApp.presentation.ui.authentication.auth
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,7 +19,7 @@ import com.example.messengerApp.presentation.utils.Validation.CODES.CODE_DIGITS
 import com.example.messengerApp.presentation.utils.Validation.CODES.CODE_LENGTH
 import com.example.messengerApp.presentation.utils.Validation.CODES.CODE_SPACES
 import com.example.messengerApp.presentation.utils.Validation.CODES.CODE_UPPER_CASE
-import com.google.android.material.snackbar.Snackbar
+import com.example.messengerApp.presentation.utils.ext.makeSnackBarError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -43,12 +43,18 @@ class AuthFragment
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.registerState.collect { state ->
                     when(state) {
-                        is Resource.Success -> startNextFragment()
+                        is Resource.Success -> {
+                            openMainActivity(binding.editTextEmail.text.toString())
+                            binding.llLoading.visibility = GONE
+                        }
                         is Resource.Empty -> {
                             emailErrorChanges()
                             passwordErrorChanges()
                         }
-                        is Resource.Error -> showErrorSnackBar(state.message ?: getString(R.string.snackbar_register_error))
+                        is Resource.Error -> {
+                            showErrorSnackBar(state.message ?: getString(R.string.snackbar_register_error))
+                            binding.llLoading.visibility = GONE
+                        }
                         is Resource.Loading -> binding.llLoading.visibility = VISIBLE
                     }
                 }
@@ -60,11 +66,19 @@ class AuthFragment
         with(binding) {
             buttonRegister.setOnClickListener { registerButton() }
             buttonGoogle.setOnClickListener { googleButtonAction() }
+            textViewSignIn.setOnClickListener { openRegisterFragment() }
         }
     }
 
+    private fun openRegisterFragment() {
+        val direction = AuthFragmentDirections
+            .actionAuthenticationFragmentToLoginFragment()
+
+        navController.navigate(direction)
+    }
+
     private fun googleButtonAction() {
-        startNextFragment()
+        openMainActivity(binding.editTextEmail.text.toString())
     }
 
     private fun registerButton() {
@@ -86,25 +100,10 @@ class AuthFragment
     }
 
     private fun showErrorSnackBar(message: String) {
-        Snackbar.make(binding.root, message.replaceFirstChar { it.titlecase() }, Snackbar.LENGTH_LONG)
-            .setActionTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.contacts_activity_class_snackbar_action_color
-                )
-            )
-            .setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.contacts_activity_class_snackbar_text_color
-                )
-            )
-            .show()
+        makeSnackBarError(requireContext(), binding.root, message)
     }
 
-    private fun startNextFragment() {
-        val email = binding.editTextEmail.text.toString()
-
+    private fun openMainActivity(email: String) {
         val direction = AuthFragmentDirections.startMainActivity(email)
 
         navController.navigate(direction)
