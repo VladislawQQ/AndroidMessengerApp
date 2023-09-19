@@ -56,7 +56,7 @@ class LoginViewModel @Inject constructor(
                     Resource.Error(message = ErrorMessages.CONNECTION_ERROR)
             } catch (e: Exception) {
                 _registerStateFlow.value =
-                    Resource.Error(message = ErrorMessages.REGISTER_ERROR)
+                    Resource.Error(message = ErrorMessages.LOGIN_ERROR)
             }
         }
 
@@ -67,14 +67,7 @@ class LoginViewModel @Inject constructor(
      */
     fun emailIsValid(email: String): Boolean = Validation.emailIsValid(email)
 
-    /**
-     * Check if password is valid with regex
-     * if !isValid return String
-     * else return null
-     */
-    fun passwordIsValid(password: String): Validation.CODES? = Validation.passwordIsValid(password)
-
-    fun validate(email: String, password: String): Boolean {
-        return emailIsValid(email) && passwordIsValid(password) == null
+    fun validate(email: String): Boolean {
+        return emailIsValid(email)
     }
 }

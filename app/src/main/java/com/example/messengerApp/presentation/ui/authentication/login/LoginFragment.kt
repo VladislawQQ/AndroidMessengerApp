@@ -40,6 +40,7 @@ class LoginFragment
                         }
                         is Resource.Empty -> {
                             emailErrorChanges()
+                            passwordChanges()
                         }
                         is Resource.Error -> {
                             showErrorSnackBar(state.message ?: getString(R.string.snackbar_login_error))
@@ -65,8 +66,7 @@ class LoginFragment
 
     private fun login() {
         with(binding) {
-            if (viewModel.validate(editTextEmail.text.toString(),
-                    editTextPassword.text.toString())
+            if (viewModel.validate(editTextEmail.text.toString())
             ) {
                 viewModel.loginUser(
                     UserRequestDto(
@@ -75,6 +75,11 @@ class LoginFragment
                     ),
                     checkboxRememberMe.isChecked
                 )
+            } else {
+                editTextEmail.text.toString()
+                    .ifEmpty { containerEmail.error = getString(R.string.invalid_email_address) }
+                editTextPassword.text.toString()
+                    .ifEmpty { containerPassword.error = getString(R.string.invalid_password) }
             }
         }
     }
@@ -102,6 +107,14 @@ class LoginFragment
                         getString(R.string.invalid_email_address)
                     else
                         null
+            }
+        }
+    }
+
+    private fun passwordChanges() {
+        with(binding) {
+            editTextPassword.doAfterTextChanged {
+                containerPassword.error = null
             }
         }
     }
